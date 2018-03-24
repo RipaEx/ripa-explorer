@@ -1,0 +1,66 @@
+<template>
+  <div class="max-w-2xl mx-auto pt-5">
+    <content-header>{{ $t("Voters") }}</content-header>
+    <section class="page-section py-10">
+      <div class="hidden sm:block">
+        <table-wallets :wallets="filteredWallets" :total="votes"></table-wallets>
+      </div>
+      <div class="sm:hidden">
+        <table-wallets-mobile :wallets="filteredWallets" :total="votes"></table-wallets-mobile>
+      </div>
+      <paginator :start="+this.page" :count="wallets.length"></paginator>
+    </section>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+import WalletService from '@/services/wallet'
+import DelegateService from '@/services/delegate'
+import sumBy from 'lodash/sumBy'
+
+export default {
+  data: () => ({
+    wallets: [],
+    perPage: 25,
+  }),
+
+  created() {
+    this.$on('paginatorChanged', page => this.changePage(page))
+  },
+
+  computed: {
+    filteredWallets() {
+      let page = this.page - 1
+
+      return this.wallets.slice(page * this.perPage, (page + 1) * this.perPage)
+    },
+    page() {
+      return this.$route.params.page
+    },
+    votes() {
+      return sumBy(this.wallets, 'balance')
+    },
+  },
+
+  mounted() {
+    this.getVoters()
+  },
+
+  methods: {
+    getVoters() {
+      WalletService
+        .find(this.$route.params.address)
+        .then(response => DelegateService.voters(response.publicKey))
+        .then(response => this.wallets = response)
+        .catch(() => next({ name: '404' }))
+    },
+
+    changePage(page) {
+      this.$router.push({
+        name: 'wallet-voters',
+        params: { address: this.$route.params.address, page }
+      })
+    }
+  }
+}
+</script>
