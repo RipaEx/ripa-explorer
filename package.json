@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "build": "node build/build.js",
-    "build:mainnet": "node build/build.js --network mainnet",
+    "build:mainnet": "node build/build.js --network mainnet --history",
     "build:devnet": "node build/build.js --network devnet",
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "dev:mainnet": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --env.network=mainnet --env.routerMode=history",
