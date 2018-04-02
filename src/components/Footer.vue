@@ -4,7 +4,7 @@
       &copy; RIPAEx.io | {{ year }}. {{ $t("All rights reserved") }} <span class="hidden md:inline-block"> | {{ $t("Version") }}: <a :href="versionLink" target="_blank">{{ version }}</a> | {{ $t("Date") }}: {{ date }}</span>
     </div>
     <div>
-      <a href="https://www.facebook.com/arkecosystem" target="_blank">
+      <a href="#">
         <svg
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
@@ -15,7 +15,7 @@
         </svg>
       </a>
 
-      <a href="https://twitter.com/ArkEcosystem" target="_blank">
+      <a href="#">
         <svg
           viewBox="0 0 24 24"
           class="m-2"
@@ -26,7 +26,7 @@
         </svg>
       </a>
 
-      <a href="https://www.youtube.com/channel/UCpc2k6zOOutGT9y56urDClg" target="_blank">
+      <a href="#">
         <svg
         viewBox="0 0 24 24"
         class="m-2"
@@ -37,7 +37,7 @@
         </svg>
       </a>
 
-      <a href="mailto:info@ark.io" target="_blank">
+      <a href="https://t.me/ripaex" target="_blank">
         <svg
           viewBox="0 0 14 14"
           class="m-2"
@@ -48,7 +48,7 @@
         </svg>
       </a>
 
-      <a href="https://www.reddit.com/r/arkecosystem" target="_blank">
+      <a href="#">
         <svg
           viewBox="0 0 17 17"
           class="m-2"
@@ -70,7 +70,7 @@
         </svg>
       </a>
 
-      <a href="https://bitcointalk.org/index.php?topic=1649695.0" target="_blank">
+      <a href="#">
         <svg
           viewBox="0 0 24 24"
           class="m-2"
@@ -81,7 +81,7 @@
         </svg>
       </a>
 
-      <a href="https://ark.io/slack" target="_blank">
+      <a href="https://join.slack.com/t/ripaex/shared_invite/enQtMzM4NzUwNjU4OTQ0LTY3MDJmMTdhYTNlZjJlNGUxNzM1YjUwYjgyYjZlMDJmOTg3NTIzNThmNTYyMGQ3ODBkOTRmYzk3Y2Y4MzBkOTY" target="_blank">
         <svg
           viewBox="0 0 24 24"
           class="m-2"
@@ -92,7 +92,7 @@
         </svg>
       </a>
 
-      <a href="https://gitter.im/ark-developers/Lobby" target="_blank">
+      <a href="#">
         <svg
           viewBox="0 0 24 24"
           class="m-2"
@@ -103,7 +103,7 @@
         </svg>
       </a>
 
-      <a href="https://steemit.com/@arkecosystem" target="_blank">
+      <a href="#">
         <svg
           viewBox="0 0 24 24"
           class="m-2"
@@ -114,7 +114,7 @@
         </svg>
       </a>
 
-      <a href="https://blog.ark.io" target="_blank">
+      <a href="https://medium.com/ripaex" target="_blank">
         <svg
           viewBox="0 0 24 24"
           class="m-2"
@@ -141,7 +141,7 @@ export default {
       return GIT_VERSION
     },
     versionLink() {
-      return `https://github.com/ArkEcosystem/ark-explorer/commit/${GIT_VERSION}`
+      return `https://github.com/RipaEx/ripa-explorer/commit/${GIT_VERSION}`
     },
     date() {
       return GIT_DATE
