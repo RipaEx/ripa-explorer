@@ -4,7 +4,7 @@
     <router-link
       :to="{ name: 'home' }"
       class="logo-container w-50px md:w-80px h-50px md:h-80px flex-none bg-blue-lightest text-2xl xl:rounded-l-md flex justify-center items-center">
-      <img class="logo max-w-50px md:max-w-50px" src="@/assets/images/logo_trasparent_small.png" />
+      <img class="logo max-w-65px md:max-w-65px" src="@/assets/images/logo_trasparent_small.png" />
     </router-link>
 
     <div class="w-full relative hidden md:flex">
