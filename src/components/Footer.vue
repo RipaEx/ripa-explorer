@@ -1,10 +1,10 @@
 <template>
   <footer class="max-w-2xl mx-auto px-5 md:px-10 py-8 text-theme-text-tertiary flex flex-wrap justify-between items-center">
     <div>
-      &copy; RIPAEx.io | {{ year }}. {{ $t("All rights reserved") }} <span class="hidden md:inline-block"> | {{ $t("Version") }}: <a :href="versionLink" target="_blank">{{ version }}</a> | {{ $t("Date") }}: {{ date }}</span>
+      &copy; <a href="https://www.ripaex.io"> RIPAEx.io | {{ year }}. {{ $t("All rights reserved") }}</a> <span class="hidden md:inline-block"> | {{ $t("Version") }}: <a :href="versionLink" target="_blank">{{ version }}</a> | {{ $t("Date") }}: {{ date }}</span>
     </div>
     <div>
-      <a href="#">
+      <a href="https://www.facebook.com/ripaex">
         <svg
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
@@ -15,7 +15,7 @@
         </svg>
       </a>
 
-      <a href="#">
+      <a href="https://twitter.com/ripaex">
         <svg
           viewBox="0 0 24 24"
           class="m-2"
@@ -70,7 +70,7 @@
         </svg>
       </a>
 
-      <a href="#">
+      <a href="https://bitcointalk.org/index.php?topic=3759172">
         <svg
           viewBox="0 0 24 24"
           class="m-2"
@@ -92,7 +92,7 @@
         </svg>
       </a>
 
-      <a href="#">
+      <a href="https://gitter.im/RipaEx/RipaEx">
         <svg
           viewBox="0 0 24 24"
           class="m-2"
