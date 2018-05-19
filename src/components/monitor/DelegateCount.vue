@@ -33,7 +33,7 @@ export default {
     },
 
     initialiseTimer() {
-      this.timer = setInterval(this.getCount, 8 * 1000)
+      this.timer = setInterval(this.getCount, 60 * 1000)
     }
   },
 
