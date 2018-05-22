@@ -43,7 +43,7 @@ export default {
     },
 
     initialiseTimer() {
-      this.timer = setInterval(this.getBlock, 8 * 1000)
+      this.timer = setInterval(this.getBlock, 60 * 1000)
     },
   },
 

@@ -60,7 +60,7 @@ export default {
     },
 
     initialiseTimer() {
-      this.timer = setInterval(this.getDelegates, 8 * 1000)
+      this.timer = setInterval(this.getDelegates, 60 * 1000)
     },
   },
 
