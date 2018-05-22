@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://i.imgur.com/JpkIhYH.png" />
+    <img src="./banner_medium_explorer.jpg" />
 </p>
 
 # RIPA Explorer 3.0
