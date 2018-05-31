@@ -16,7 +16,7 @@
       </div>
       <div class="mr-2">
         <span>XPX/{{name}}:</span>
-        <span class="block md:inline-block">{{ rawCurrency(rate, name) }}</span>
+        <span class="block md:inline-block"><!-- {{ rawCurrency(rate, name) }} -->0.0</span>
       </div>
       <div>
         <span>{{ $t("Supply") }}:</span>
