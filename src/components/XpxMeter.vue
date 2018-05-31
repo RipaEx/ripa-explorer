@@ -2,7 +2,7 @@
   <svg style="transform: rotate(-90deg);" :viewBox="`0 0 ${width} ${width}`">
     <circle
       fill="none"
-      stroke="var(--ark-meter)"
+      stroke="var(--xpx-meter)"
       :cx="width / 2" :cy="width / 2" :r="radius" :stroke-width="stroke" />
     <circle v-if="percentage"
       :style="{strokeDashoffset: dashoffset, strokeDasharray: circumference }"
