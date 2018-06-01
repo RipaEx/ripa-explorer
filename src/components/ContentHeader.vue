@@ -15,8 +15,8 @@
         <span class="block md:inline-block">{{ height.toLocaleString() }}</span>
       </div>
       <div class="mr-2">
-        <span>ARK/{{name}}:</span>
-        <span class="block md:inline-block">{{ rawCurrency(rate, name) }}</span>
+        <span>XPX/{{name}}:</span>
+        <span class="block md:inline-block"><!-- {{ rawCurrency(rate, name) }} -->0.0</span>
       </div>
       <div>
         <span>{{ $t("Supply") }}:</span>

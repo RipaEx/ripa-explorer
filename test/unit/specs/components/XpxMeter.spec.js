@@ -1,17 +1,17 @@
 import { mount } from '@vue/test-utils'
-import ArkMeter from '@/components/ArkMeter'
+import XpxMeter from '@/components/XpxMeter'
 
-describe('ArkMeter', () => {
+describe('XpxMeter', () => {
   describe('when percentage is 0%', () => {
     it('the arc with colour should be hidden', () => {
-      const wrapper = mount(ArkMeter, { propsData: { percentage: 0 } })
+      const wrapper = mount(XpxMeter, { propsData: { percentage: 0 } })
       expect(wrapper.findAll('circle')).toHaveLength(1)
     })
   })
 
   describe('when percentage is bigger than 0%', () => {
     it('the arc with colour should be visible', () => {
-      const wrapper = mount(ArkMeter, { propsData: { percentage: 50 } })
+      const wrapper = mount(XpxMeter, { propsData: { percentage: 50 } })
       expect(wrapper.findAll('circle')).toHaveLength(2)
     })
   })

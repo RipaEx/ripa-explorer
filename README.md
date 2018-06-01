@@ -105,8 +105,8 @@ If you discover a security vulnerability within this package, please send an e-m
 ## 8. Contributing
 
 * If you find any bugs, submit an [issue](../../issues) or open a [pull-request](../../pulls), helping us catch and fix them.
-* Engage with other users and developers on [ARK Slack](https://ark.io/slack/).
-* Join our [gitter](https://gitter.im/ark-developers/Lobby).
+* Engage with other users and developers on [Ripa Exchange Slack](https://join.slack.com/t/ripaex/shared_invite/enQtMzM4NzUwNjU4OTQ0LTY3MDJmMTdhYTNlZjJlNGUxNzM1YjUwYjgyYjZlMDJmOTg3NTIzNThmNTYyMGQ3ODBkOTRmYzk3Y2Y4MzBkOTY).
+* Join our [gitter](https://gitter.im/RipaEx/RipaEx).
 * [Contribute bounties](./CONTRIBUTING.md).
 
 ## 9. Credits

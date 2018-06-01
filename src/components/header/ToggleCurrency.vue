@@ -4,7 +4,7 @@
     class="px-2 md:px-4 py-3 md:py-6 flex items-center text-sm border-b-2 border-transparent hover:border-red">
     <img class="md:mr-4 flex-none" :src="imageSource" height="16" />
     <span class="whitespace-no-wrap text-theme-text-content hidden md:inline-block">
-      ARK/{{ currencyName }}: {{ rawCurrency(currencyRate, currencyName) }}
+      XPX/{{ currencyName }}: {{ rawCurrency(currencyRate, currencyName) }}
     </span>
   </button>
 </template>
