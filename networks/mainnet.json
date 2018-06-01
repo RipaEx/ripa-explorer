@@ -23,7 +23,11 @@
     "USD": "$"
   },
   "knownWallets": {
-    "PX98V1FhJkVdBgw3pt1bMbCksuJEYtAmiK": "Reserve"
+    "PX98V1FhJkVdBgw3pt1bMbCksuJEYtAmiK": "Reserve",
+    "PPBobGXbgCYEdXrGd9VBzqMeSVV1UKr4VJ": "ripaex.io - Team",
+    "PXVTMqLFGJe82iofjYAoBHxVyDPPFb5ARP": "Ripa Community Fund",
+    "PMYEnQVEKXWbNDXksZxSe1h2sPpmdaSExR": "ARK.io SCIC",
+    "P8muHUDRPpdKzakbKzMeHQts5GaFQgRybS": "CFO"
   },
   "defaults": {
     "currency": {
