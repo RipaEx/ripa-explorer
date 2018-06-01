@@ -106,6 +106,11 @@ input:focus {
   outline: none;
 }
 
+button:disabled {
+  cursor: default;
+  color: #838a9b !important;
+}
+
 .semibold {
   font-family: 'Proxima Nova Semibold';
 }
@@ -125,6 +130,10 @@ hr {
   width: 96%;
   background-color: var(--theme-border-secondary);
   height: 1px;
+}
+
+.margin-t-2 {
+  margin-top: 2px;
 }
 
 /** Tables */
@@ -167,15 +176,9 @@ thead tr {
 thead th {
   position: sticky;
   position: -webkit-sticky;
-  top: 80px;
+  top: 50px;
   background-color: var(--color-theme-table-row-sticky);
   z-index: 10;
-}
-
-@screen sm {
-  thead th {
-    top: 50px;
-  }
 }
 
 @screen md {
@@ -279,6 +282,10 @@ thead th {
   @apply .list-row .border-b
 }
 
+.list-row-border-b-no-wrap {
+  @apply .list-row-border-b .flex-no-wrap;
+}
+
 .row-mobile {
   @apply .px-5 .py-4
 }
@@ -326,8 +333,9 @@ thead th {
   @apply .bg-theme-button .text-theme-button-text .semibold .py-5 .px-8 .border-transparent .rounded
 }
 
-.pager-button:hover {
-  @apply .bg-blue .text-white
+.pager-button:enabled:hover,
+.block-pager-button:enabled:hover {
+  @apply .bg-blue .text-white .hover-button-shadow-definition
 }
 
 .block-pager-button {
@@ -337,7 +345,7 @@ thead th {
 /** Menu */
 
 .menu-button {
-  @apply .flex .items-center .p-4 .border-b-2 .border-transparent .text-theme-text-secondary
+  @apply .flex .items-center .p-4 .border-b-2 .border-transparent .margin-t-2 .text-theme-text-secondary
 }
 
 .menu-button:hover {

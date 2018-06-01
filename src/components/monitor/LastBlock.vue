@@ -10,7 +10,7 @@
     <div class="hidden md:block">
       <div class="text-grey mb-2 min-w-0">{{ $t("Forged") }}</div>
       <div class="text-lg text-white truncate">
-        {{ $t("from transactions", { currency: readableCrypto(block.totalForged), transactions: block.numberOfTransactions }) }}
+        {{ readableCrypto(block.totalForged) }} {{ $tc("from transactions", block.numberOfTransactions, { count: block.numberOfTransactions }) }}
       </div>
     </div>
 
@@ -33,13 +33,15 @@ export default {
     timer: null,
   }),
 
-  mounted() {
-    this.getBlock().then(() => this.initialiseTimer())
+  async mounted() {
+    await this.getBlock()
+    this.initialiseTimer()
   },
 
   methods: {
-    getBlock() {
-      return BlockService.last().then(response => (this.block = response))
+    async getBlock() {
+      const response = await BlockService.last()
+      this.block = response
     },
 
     initialiseTimer() {

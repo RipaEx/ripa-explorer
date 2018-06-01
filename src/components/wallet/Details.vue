@@ -12,8 +12,10 @@
         v-if="view === 'public'"
         class="pr-8 flex-auto min-w-0">
         <div class="text-grey mb-2">{{ $t("Address") }}</div>
-        <div class="text-lg text-white semibold truncate">
-          <span class="mr-2">{{ wallet.address }}</span>
+        <div class="flex">
+          <div class="text-lg text-white semibold truncate">
+            <span class="mr-2">{{ wallet.address }}</span>
+          </div>
           <clipboard v-if="wallet.address" :value="wallet.address"></clipboard>
         </div>
       </div>
@@ -22,15 +24,37 @@
         v-if="view === 'private' && wallet.publicKey"
         class="pr-8 flex-auto min-w-0">
         <div class="text-grey mb-2">{{ $t("Public Key") }}</div>
-        <div class="text-lg text-white semibold truncate mr-2">
-          <span class="mr-2">{{ wallet.publicKey }}</span>
+        <div class="flex">
+          <div class="text-lg text-white semibold truncate mr-2">
+            <span class="mr-2">{{ wallet.publicKey }}</span>
+          </div>
           <clipboard v-if="wallet.publicKey" :value="wallet.publicKey"></clipboard>
+        </div>
+      </div>
+
+      <div
+        v-if="view === 'public'"
+        class="flex-none border-r border-grey-dark px-9">
+        <div class="text-grey mb-2">{{ $t("Balance (token)", {token: networkToken()}) }}</div>
+        <div class="text-lg text-white semibold">{{ readableCrypto(wallet.balance, false) }}</div>
+      </div>
+
+      <div
+        v-if="view === 'public'"
+        class="flex-none border-r border-grey-dark px-9">
+        <div class="text-grey mb-2">{{ $t("Transactions") }}</div>
+        <div class="text-lg text-white semibold">
+          <span class="text-green">{{ receivedCount }}</span>
+          <img class="mr-4" src="@/assets/images/icons/arrow-down.svg" />
+          <span class="text-red">{{ sendCount }}</span>
+          <img src="@/assets/images/icons/arrow-up.svg" />
         </div>
       </div>
 
       <div class="flex-none px-8">
         <button
           @click="view = 'public'"
+          :disabled="!wallet.publicKey"
           :class="[view === 'public' ? 'bg-blue-darker' : 'bg-transparent text-blue-light', 'py-3 px-3 rounded-md text-white font-normal text-xs hover:text-blue']">
           <svg
             class="block"
@@ -53,25 +77,6 @@
           </svg>
         </button>
       </div>
-
-      <div
-        v-if="view === 'public'"
-        class="flex-none border-l border-grey-dark px-9">
-        <div class="text-grey mb-2">{{ $t("Balance (token)", {token: networkToken()}) }}</div>
-        <div class="text-lg text-white semibold">{{ readableCrypto(wallet.balance, false) }}</div>
-      </div>
-
-      <div
-        v-if="view === 'public'"
-        class="flex-none border-l border-grey-dark px-9">
-        <div class="text-grey mb-2">{{ $t("Transactions") }}</div>
-        <div class="text-lg text-white semibold">
-          <span class="text-green">{{ receivedCount }}</span>
-          <img class="mr-4" src="@/assets/images/icons/arrow-down.svg" />
-          <span class="text-red">{{ sendCount }}</span>
-          <img src="@/assets/images/icons/arrow-up.svg" />
-        </div>
-      </div>
     </div>
 
     <!-- Mobile -->
@@ -93,7 +98,7 @@
           <div class="md:w-1/2 px-6 w-full" v-if="wallet.publicKey">
             <div class="text-grey mb-2">{{ $t("Public Key") }}</div>
             <div class="text-white flex">
-              <span class="mr-2">{{ truncate(wallet.publicKey, 36) }}</span>
+              <span class="mr-2">{{ truncate(wallet.publicKey) }}</span>
               <clipboard v-if="wallet.publicKey" :value="wallet.publicKey"></clipboard>
             </div>
           </div>
@@ -160,16 +165,14 @@ export default {
   },
 
   methods: {
-    getSendCount() {
-      TransactionService.sendByAddressCount(this.wallet.address).then(
-        response => (this.sendCount = response)
-      )
+    async getSendCount() {
+      const response = await TransactionService.sentByAddressCount(this.wallet.address)
+      this.sendCount = response
     },
 
-    getReceivedCount() {
-      TransactionService.receivedByAddressCount(this.wallet.address).then(
-        response => (this.receivedCount = response)
-      )
+    async getReceivedCount() {
+      const response = await TransactionService.receivedByAddressCount(this.wallet.address)
+      this.receivedCount = response
     },
   },
 }

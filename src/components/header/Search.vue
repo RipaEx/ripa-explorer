@@ -9,10 +9,11 @@
     <input
       type="search"
       ref="search"
-      placeholder="Find a block, transaction, address or delegate"
+      :placeholder=placeholder
       class="search-input w-full flex-auto mr-2 py-4 pl-4 bg-transparent"
       :class="{ 'text-grey': nightMode }"
       v-model="query"
+      v-tooltip="{show: nothingFound, content: $t('Nothing matched your search'), trigger: 'manual', placement: 'bottom-start', classes: 'search-tip' }"
       @keyup.enter="search" />
 
     <div class="search-icon text-grey hover:text-blue p-3 md:p-4" @click="search">
@@ -26,42 +27,101 @@ import SearchService from '@/services/search'
 import { mapGetters } from 'vuex'
 
 export default {
-  data: () => ({ query: null }),
+  data: () => ({
+    query: null,
+    nothingFound: false,
+    searchCount: 0,
+    placeholder: 'Search'
+  }),
 
   computed: {
     ...mapGetters('ui', ['nightMode']),
+    ...mapGetters('network', ['knownWallets'])
   },
 
   mounted() {
     this.$refs.search.focus()
+
+    const WIDTH_THRESHOLD = 1024
+    const widthQuery = window.matchMedia(`(max-width: ${WIDTH_THRESHOLD}px)`)
+
+    widthQuery.addListener(e => this.setMobilePlaceholder(e.matches))
+
+    this.setMobilePlaceholder(window.innerWidth < WIDTH_THRESHOLD)
   },
 
   methods: {
-    search() {
-      SearchService.findByAddress(this.query).then(response =>
-        this.changePage('wallet', { address: response.account.address })
-      ).catch(e => console.log(e.message || e.data.error))
+    async search() {
+      this.nothingFound = false
+      this.searchCount = 0
 
-      SearchService.findByUsername(this.query).then(response =>
-        this.changePage('wallet', { address: response.delegate.address })
-      ).catch(e => console.log(e.message || e.data.error))
+      try {
+        const responseAddress = await SearchService.findByAddress(this.query)
+        this.changePage('wallet', { address: responseAddress.account.address })
+      } catch(e) { this.updateSearchCount(e) }
 
-      SearchService.findByPublicKey(this.query).then(response =>
-        this.changePage('wallet', { address: response.delegate.address })
-      ).catch(e => console.log(e.message || e.data.error))
+      try {
+        const responseUsername = await SearchService.findByUsername(this.query)
+        this.changePage('wallet', { address: responseUsername.delegate.address })
+      } catch(e) { this.updateSearchCount(e) }
 
-      SearchService.findByBlockId(this.query).then(response =>
-        this.changePage('block', { id: response.block.id })
-      ).catch(e => console.log(e.message || e.data.error))
+      try {
+        const responsePublicKey = await SearchService.findByPublicKey(this.query)
+        this.changePage('wallet', { address: responsePublicKey.delegate.address })
+      } catch(e) { this.updateSearchCount(e) }
 
-      SearchService.findByTransactionId(this.query).then(response =>
-        this.changePage('transaction', { id: response.transaction.id })
-      ).catch(e => console.log(e.message || e.data.error))
+      try {
+        const responseBlock = await SearchService.findByBlockId(this.query)
+        this.changePage('block', { id: responseBlock.block.id })
+      } catch(e) { this.updateSearchCount(e) }
+
+      try {
+        const responseTransaction = await SearchService.findByTransactionId(this.query)
+        this.changePage('transaction', { id: responseTransaction.transaction.id })
+      } catch(e) { this.updateSearchCount(e) }
+
+      const address = this.findByNameInKnownWallets(this.query)
+      if (address) {
+        this.changePage('wallet', { address: address })
+      } else {
+        this.updateSearchCount(null)
+      }
+    },
+
+    updateSearchCount(err) {
+      if (err !== null) {
+        console.log(err.message || err.data.error)
+      }
+
+      // Increment counter to keep track of whether we found anything
+      this.searchCount += 1
+      if (this.searchCount === 6) { // Should match total amount of callbacks
+        this.nothingFound = true
+        setTimeout(() => (this.nothingFound = false), 1500)
+      }
+    },
+
+    setMobilePlaceholder(showMobile) {
+      this.placeholder = showMobile
+        ? this.$i18n.t('Search')
+        : this.$i18n.t('Find a block, transaction, address or delegate')
     },
 
     changePage(name, params) {
       this.$router.push({ name, params })
       this.$store.dispatch('ui/setHeaderType', null)
+    },
+
+    findByNameInKnownWallets(name) {
+      if (name !== null) {
+        for (const address in this.knownWallets) {
+          if (this.knownWallets.hasOwnProperty(address)) {
+            if (this.query.toLowerCase() === this.knownWallets[address].toLowerCase()) {
+              return address
+            }
+          }
+        }
+      }
     },
   },
 }
@@ -71,7 +131,18 @@ export default {
 .search-input::placeholder {
   color: var(--color-theme-text-placeholder);
 }
+
 .search-icon:hover {
   box-shadow: 0 0 13px 2px rgba(197, 197, 213, 0.24);
+  cursor: pointer;
+}
+
+.tooltip.search-tip .tooltip-inner {
+  background-color: #ef192d;
+  color: white;
+}
+
+.tooltip.search-tip .tooltip-arrow {
+  border-color: #ef192d;
 }
 </style>

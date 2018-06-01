@@ -2,6 +2,8 @@
     <img src="./banner_medium_explorer.jpg" />
 </p>
 
+[![Build Status](https://img.shields.io/travis/ArkEcosystem/ark-explorer/master.svg?style=flat)](https://travis-ci.org/RipaEx/ripa-explorer)
+
 # RIPA Explorer 3.0
 
 > Designed and developed from the ground-up, using lean & fast developmental frameworks (Tailwind CSS & Vue.JS).
@@ -54,6 +56,14 @@ A running instance of the explorer on GitHub Pages can be found at <to be added>
 
 > This step is not required if you are hosting the explorer on your "root" repository which is usually your username https://username.github.io/.
 
+#### 3.5 Run Express Server
+
+You can run the explorer as an express server. This makes it a little more light-weight but not needing to have services such as apache or nginx.
+
+```bash
+EXPLORER_HOST="127.0.0.1" EXPLORER_PORT="4200" node express-server.js
+```
+
 ## 4. History Mode
 
 If you wish to remove the `/#/` from your URLs you can follow those steps https://router.vuejs.org/en/essentials/history-mode.html.
@@ -78,6 +88,12 @@ yarn dev --env.routerMode=history
 
 ```bash
 yarn dev # or yarn dev:mainnet
+```
+
+#### Devnet
+
+```bash
+yarn dev:devnet
 ```
 
 #### Custom

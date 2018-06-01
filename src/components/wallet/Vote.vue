@@ -1,7 +1,7 @@
 <template>
   <div class="list-row" v-show="Object.keys(delegate).length">
     <div>{{ $t("Votes") }}</div>
-    <div><link-wallet :address="delegate.address">{{ delegate.username }}</link-wallet></div>
+    <div><link-wallet v-if="delegate.address" :address="delegate.address">{{ delegate.username }}</link-wallet></div>
   </div>
 </template>
 
@@ -25,10 +25,9 @@ export default {
   },
 
   methods: {
-    getVotes() {
-      WalletService
-        .vote(this.wallet.address)
-        .then(response => this.delegate = response)
+    async getVotes() {
+      const response = await WalletService.vote(this.wallet.address)
+      this.delegate = response
     }
   }
 }

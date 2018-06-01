@@ -3,17 +3,21 @@
     <content-header>{{ $t("Transaction") }}</content-header>
 
     <section class="mb-5">
-      <div class="px-5 sm:px-10 py-8 bg-theme-feature-background flex xl:rounded-lg items-end">
+      <div class="px-5 sm:px-10 py-8 bg-theme-feature-background flex xl:rounded-lg items-center">
         <div class="mr-6 flex-none">
           <img class="block" src="@/assets/images/icons/transaction.svg" />
         </div>
         <div  class="flex-auto min-w-0">
           <div class="text-grey mb-2">{{ $t("Transaction ID") }}</div>
-          <div class="text-xl text-white semibold truncate">{{ transaction.id }}</div>
+          <div class="flex">
+            <div class="text-xl text-white semibold truncate">
+              <span class="mr-2">{{ transaction.id }}</span>
+            </div>
+            <clipboard
+              v-if="transaction.id"
+              :value="transaction.id"></clipboard>
+          </div>
         </div>
-        <clipboard
-          v-if="transaction.id"
-          :value="transaction.id"></clipboard>
       </div>
     </section>
 
@@ -53,9 +57,9 @@
           <div>{{ readableTimestamp(transaction.timestamp) }}</div>
         </div>
 
-        <div class="list-row-border-b" v-if="transaction.vendorField">
-          <div>{{ $t("Vendor field") }}</div>
-          <div>{{ transaction.vendorField }}</div>
+        <div class="list-row-border-b-no-wrap" v-if="transaction.vendorField">
+          <div class="mr-4">{{ $t("Smartbridge") }}</div>
+          <div class="text-right">{{ transaction.vendorField }}</div>
         </div>
 
         <div class="list-row" v-if="transaction.blockid">
@@ -80,19 +84,21 @@ export default {
     ...mapGetters('delegates', ['delegates']),
   },
 
-  beforeRouteEnter(to, from, next) {
-    TransactionService.find(to.params.id)
-      .then(response => next(vm => vm.setTransaction(response)))
-      .catch(() => next({ name: '404' }))
+  async beforeRouteEnter(to, from, next) {
+    try {
+      const response = await TransactionService.find(to.params.id)
+      next(vm => vm.setTransaction(response))
+    } catch(e) { next({ name: '404' }) }
   },
 
-  beforeRouteUpdate(to, from, next) {
+  async beforeRouteUpdate(to, from, next) {
     this.transaction = {}
 
-    TransactionService.find(to.params.id)
-      .then(response => this.setTransaction(response))
-      .then(() => next())
-      .catch(() => next({ name: '404' }))
+    try {
+      const response = await TransactionService.find(to.params.id)
+      this.setTransaction(response)
+      next()
+    } catch(e) { next({ name: '404' }) }
   },
 
   methods: {

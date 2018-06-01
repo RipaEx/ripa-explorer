@@ -3,27 +3,27 @@ import moment from 'moment'
 import store from '@/store'
 
 class CryptoCompareService {
-  day() {
+  async day() {
     return this.sendRequest('hour', 24, 'HH:mm')
   }
 
-  week() {
+  async week() {
     return this.sendRequest('day', 7, 'DD.MM')
   }
 
-  month() {
+  async month() {
     return this.sendRequest('day', 30, 'DD.MM')
   }
 
-  quarter() {
+  async quarter() {
     return this.sendRequest('day', 120, 'DD.MM')
   }
 
-  year() {
+  async year() {
     return this.sendRequest('day', 365, 'DD.MM')
   }
 
-  sendRequest(type, limit, dateTimeFormat) {
+  async sendRequest(type, limit, dateTimeFormat) {
     const date = Math.round(new Date().getTime() / 1000)
 
     let targetCurrency = 'USD'
@@ -31,7 +31,7 @@ class CryptoCompareService {
       targetCurrency = store.getters['currency/name']
     }
 
-    return axios
+    const response = await axios
       .get(`https://min-api.cryptocompare.com/data/histo${type}`, {
         params: {
           fsym: store.getters['network/token'],
@@ -40,20 +40,18 @@ class CryptoCompareService {
           limit
         }
       })
-      .then(response =>
-        this.transform(response.data.Data, dateTimeFormat)
-      )
+    return this.transform(response.data.Data, dateTimeFormat)
   }
 
   transform(response, dateTimeFormat) {
-    return Promise.resolve({
+    return {
       labels: response.map(value => {
         return moment.unix(value.time).format(dateTimeFormat)
       }),
       datasets: response.map(value => {
         return value.close
       })
-    })
+    }
   }
 }
 

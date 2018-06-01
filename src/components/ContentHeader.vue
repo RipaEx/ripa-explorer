@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="flex justify-between flex-wrap px-5 sm:px-10 xl:px-0">
-      <h1 class="text-2xl md:text-3xl mb-6 text-theme-text-primary"><slot></slot></h1>
+      <h1 class="text-2xl md:text-3xl mb-6 text-theme-text-primary sm:mr-10"><slot></slot></h1>
       <div class="hidden sm:flex items-center text-theme-text-tertiary text-2xs px-3 sm:px-8 xl:px-6 py-3 mb-6 bg-stat-background rounded-md">
         <div class="pr-6">{{ $t("Height") }}: {{ height.toLocaleString() }}</div>
         <div class="pr-6">{{ $t("Network") }}: {{ $t(alias) }}</div>
-        <div class="pr-6">{{ $t("Supply") }}: {{ readableCrypto(supply) }}</div>
-        <div>{{ $t("Market Cap") }}: <currency :amount="+supply"></currency></div>
+        <div class="pr-6">{{ $t("Supply") }}: <span class="whitespace-no-wrap">{{ readableCrypto(supply) }}</span></div>
+        <!-- div>{{ $t("Market Cap") }}: <currency :amount="+supply"></currency></div -->
       </div>
     </div>
     <div class="sm:hidden flex items-center justify-between text-theme-text-tertiary text-2xs px-5 sm:px-8 xl:px-6 py-3 bg-stat-background">
@@ -15,12 +15,12 @@
         <span class="block md:inline-block">{{ height.toLocaleString() }}</span>
       </div>
       <div class="mr-2">
-        <span>XPX/{{name}}:</span>
-        <span class="block md:inline-block"><!-- {{ rawCurrency(rate, name) }} -->0.0</span>
+        <span>ARK/{{name}}:</span>
+        <span class="block md:inline-block">{{ rawCurrency(rate, name) }}</span>
       </div>
       <div>
         <span>{{ $t("Supply") }}:</span>
-        <span class="block md:inline-block">{{ readableCrypto(supply) }}</span>
+        <span class="block md:inline-block whitespace-no-wrap">{{ readableCrypto(supply) }}</span>
       </div>
     </div>
   </div>
