@@ -34,8 +34,8 @@
     "PUVjy7NYE4c5S36g6cxhvHPd6BrqHdHEar": "Burning - Price Stability",
     "PERvYkoSaVAPyBkeJEG3SLCienPrE6138C": "Series B Funding",
     "PHSu972QUhG9g4jpsNwj8eUC87MM4pMLmg": "Atlantico Network",
-    "Graviex exchange cold wallet": "PFrZSv9mZamFRrcNQ6BcJXqRBZJsZrbjxs",
-    "Altilly exchange cold wallet": "PLT1JACwnC8PinpgKMf54NpWBR9fDoZJ4P"
+    "PFrZSv9mZamFRrcNQ6BcJXqRBZJsZrbjxs": "Graviex exchange cold wallet",
+    "PLT1JACwnC8PinpgKMf54NpWBR9fDoZJ4P": "Altilly exchange cold wallet"
   },
   "defaults": {
     "currency": {
