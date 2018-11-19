@@ -2,10 +2,12 @@ import Vue from 'vue'
 import moment from 'moment'
 import store from '@/store'
 
+const locale = store.getters['ui/locale']
+
 const methods = {
   isDelegateByAddress(address) {
     return (
-      this.$store.getters['delegates/delegates'].filter(
+      store.getters['delegates/delegates'].filter(
         d => d.address === address
       ).length > 0
     )
@@ -13,7 +15,7 @@ const methods = {
 
   isDelegateByPublicKey(publicKey) {
     return (
-      this.$store.getters['delegates/delegates'].filter(
+      store.getters['delegates/delegates'].filter(
         d => d.publicKey === publicKey
       ).length > 0
     )
@@ -30,9 +32,9 @@ const methods = {
         minute: 0,
         second: 0,
       })
-      .add(Math.abs(typeof timeZoneOffset !== 'undefined' ? timeZoneOffset : new Date().getTimezoneOffset()), 'minutes')
       .add(value, 'seconds')
-      .format('DD.MM.YYYY HH:mm:ss')
+      .local()
+      .format('L LTS')
   },
 
   readableTimestampAgo(time, compareTime) {
@@ -82,50 +84,65 @@ const methods = {
     return [store.getters['network/token'], 'BTC', 'ETH', 'LTC'].some(
       c => currencyName.indexOf(c) > -1
     )
-      ? value.toLocaleString(undefined, {
+      ? value.toLocaleString(locale, {
         maximumFractionDigits: 8,
       })
-      : value.toLocaleString(undefined, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
+      : value.toLocaleString(locale, {
+        minimumFractionDigits: 4,
+        maximumFractionDigits: 4,
       })
   },
 
-  readableNumber(value, digits = 2) {
-    return value.toFixed(digits)
+  readableNumber(value, digits = 2, separator = false) {
+    if (!separator) {
+      return value.toFixed(digits)
+    }
+
+    return value.toLocaleString(locale, {
+      minimumFractionDigits: digits,
+      maximumFractionDigits: digits,
+    })
   },
 
   readableFiat(value) {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat(locale, {
       style: 'currency',
       currency: store.getters['currency/name'],
       minimumFractionDigits: 2,
     }).format(value)
   },
 
-  readableCurrency(value, currency = null, normalise = true) {
+  readableCurrency(value, rate = null, currency = null, normalise = true) {
     const currencyName = currency || store.getters['currency/name']
 
-    value *= store.getters['currency/rate']
+    value *= rate || store.getters['currency/rate']
 
     if (normalise) {
       value /= Math.pow(10, 8)
     }
 
+    const cryptos = {
+      'ARK': 'Ѧ',
+      'BTC': 'Ƀ',
+      'ETH': 'Ξ',
+      'LTC': 'Ł'
+    }
+
     return [store.getters['network/token'], 'BTC', 'ETH', 'LTC'].some(
       c => currencyName.indexOf(c) > -1
     )
-      ? value.toLocaleString(undefined, {
-        maximumFractionDigits: 8,
-      })
-      : value.toLocaleString(undefined, {
-        maximumFractionDigits: 2,
+      ? `${value.toLocaleString(locale, {
+        maximumFractionDigits: 8
+      })} ${cryptos[currencyName]}`
+      : value.toLocaleString(locale, {
+        style: 'currency',
+        currency: currencyName
       })
   },
 
   readableCrypto(value, appendCurrency = true, decimals = 8) {
     if (typeof value !== 'undefined') {
-      value = (value /= Math.pow(10, 8)).toLocaleString(undefined, {
+      value = (value /= Math.pow(10, 8)).toLocaleString(locale, {
         maximumFractionDigits: decimals,
       })
 
@@ -143,12 +160,11 @@ const methods = {
 
   percentageString(value, decimals = 2) {
     if (typeof value !== 'undefined') {
-      value = value.toLocaleString(undefined, {
+      return (value / 100).toLocaleString(locale, {
         minimumFractionDigits: decimals,
         maximumFractionDigits: decimals,
+        style: 'percent'
       })
-
-      return value + '%'
     }
 
     return '-'

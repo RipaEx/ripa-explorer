@@ -1,9 +1,9 @@
 <template>
   <loader :data="transactions">
-    <table-component :data="transactions" sort-by="timestamp" sort-order="desc" :show-filter="false" :show-caption="false" table-class="w-full">
+    <table-component v-if="transactions && transactions.length > 0" :data="transactions" sort-by="timestamp" sort-order="desc" :show-filter="false" :show-caption="false" table-class="w-full">
       <table-column show="id" :label="$t('ID')" header-class="left-header-start-cell" cell-class="left-start-cell">
         <template slot-scope="row">
-          <link-transaction :id="row.id" :smart-bridge="row.vendorField"></link-transaction>
+          <link-transaction :id="row.id" :smart-bridge="row.vendorField" :show-smart-bridge-icon="showSmartBridgeIcon"></link-transaction>
         </template>
       </table-column>
 
@@ -21,7 +21,7 @@
 
       <table-column show="recipientId" :label="$t('Recipient')" header-class="left-header-cell" cell-class="left-cell">
         <template slot-scope="row">
-          <link-wallet :address="row.recipientId" :type="row.type"></link-wallet>
+          <link-wallet :address="row.recipientId" :type="row.type" :asset="row.asset"></link-wallet>
         </template>
       </table-column>
 
@@ -31,7 +31,7 @@
         </template>
       </table-column>
 
-      <table-column show="amount" :label="$t('Amount (token)', {token: networkToken()})" header-class="right-header-end-cell lg:pr-4" cell-class="right-end-cell lg:pr-4">
+      <table-column show="amount" :label="$t('Amount (token)', { token: networkToken() })" header-class="right-header-end-cell lg:pr-4" cell-class="right-end-cell lg:pr-4">
         <template slot-scope="row">
           <span class="whitespace-no-wrap">
             <transaction-amount :transaction="row" :type="row.type"></transaction-amount>
@@ -39,12 +39,15 @@
         </template>
       </table-column>
 
-      <table-column show="fee" :label="$t('Fee (token)', {token: networkToken()})" header-class="right-header-end-cell hidden lg:table-cell" cell-class="right-end-cell hidden lg:table-cell">
+      <table-column show="fee" :label="$t('Fee (token)', { token: networkToken() })" header-class="right-header-end-cell hidden lg:table-cell" cell-class="right-end-cell hidden lg:table-cell">
         <template slot-scope="row">
           {{ readableCrypto(row.fee) }}
         </template>
       </table-column>
     </table-component>
+    <div v-else class="px-5 md:px-10">
+      <span>{{ $t("No results") }}</span>
+    </div>
   </loader>
 </template>
 
@@ -52,8 +55,16 @@
 export default {
   props: {
     transactions: {
-      type: Array,
+      // type: Array or null
       required: true,
+    }
+  },
+
+  computed: {
+    showSmartBridgeIcon() {
+      return this.transactions.some(transaction => {
+        return !!transaction.vendorField
+      })
     }
   }
 }
@@ -64,7 +75,7 @@ export default {
     white-space: normal;
   }
 
-  @media(min-width: 815px) {
+  @media(min-width: 870px) {
     .wrap-timestamp {
       white-space: nowrap;
     }

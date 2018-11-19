@@ -1,6 +1,6 @@
 <template>
-  <section class="page-section py-8 mb-5">
-    <div class="px-5 sm:px-10 py-4">
+  <section class="page-section py-5 md:py-10 mb-5">
+    <div class="px-5 sm:px-10">
       <div class="list-row-border-b">
         <div>{{ $t("Transactions") }}</div>
         <div>{{ block.numberOfTransactions }}</div>
@@ -22,17 +22,17 @@
       </div>
 
       <div class="list-row-border-b">
-        <div>{{ $t("Total Fee") }}</div>
+        <div>{{ $t("Total fee") }}</div>
         <div>{{ readableCrypto(block.totalFee) }}</div>
       </div>
 
       <div class="list-row-border-b">
-        <div>{{ $t("Total Forged") }}</div>
+        <div>{{ $t("Total forged") }}</div>
         <div>{{ readableCrypto(block.totalForged) }}</div>
       </div>
 
       <div class="list-row-border-b">
-        <div>{{ $t("Total Amount") }}</div>
+        <div>{{ $t("Total amount") }}</div>
         <div>{{ readableCrypto(block.totalAmount) }}</div>
       </div>
 

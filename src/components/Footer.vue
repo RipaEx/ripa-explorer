@@ -1,6 +1,6 @@
 <template>
   <footer class="max-w-2xl mx-auto px-5 md:px-10 py-8 text-theme-text-tertiary flex flex-col lg:flex-row flex-wrap justify-between items-center">
-    <div class="mb-4 lg:mb-0">
+    <div class="mb-4 lg:mb-0 text-center md:text-left">
       <span class="block md:inline-block mb-4 md:mb-0 text-center">&copy; <a href="https://www.ripaex.io"> RIPAEx.io | {{ year }}. {{ $t("All rights reserved") }}</a> </span> <div class="block md:inline-block"><span class="hidden md:inline-block"> | </span> <span>{{ $t("Version") }}: <a :href="versionLink" target="_blank">{{ version }}</a> | {{ $t("Date") }}: {{ date }}</span></div>
     </div>
     <div class="text-center">
@@ -48,7 +48,7 @@
         </svg>
       </a>
 
-      <a href="#">
+      <a href="https://www.reddit.com/r/RipaEx/">
         <svg
           viewBox="0 0 17 17"
           class="m-2"
@@ -103,7 +103,7 @@
         </svg>
       </a>
 
-      <a href="#">
+      <a href="https://steemit.com/@ripaex">
         <svg
           viewBox="0 0 24 24"
           class="m-2"
@@ -114,7 +114,7 @@
         </svg>
       </a>
 
-      <a href="https://medium.com/ripaex" target="_blank">
+      <a href="https://medium.com/ripaexchange" target="_blank">
         <svg
           viewBox="0 0 24 24"
           class="m-2"

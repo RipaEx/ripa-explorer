@@ -31,6 +31,13 @@ export default {
       showScale: true,
       responsive: true,
       maintainAspectRatio: false,
+      hover: {
+          intersect: false
+      },
+      animation: {
+          duration: 0
+      },
+      responsiveAnimationDuration: 0,
       legend: {
         display: false,
       },
@@ -54,7 +61,7 @@ export default {
                   return store.getters['currency/symbol'] + value.toFixed(8)
                 }
 
-                return store.getters['currency/symbol'] + value.toFixed(2)
+                return store.getters['currency/symbol'] + value.toFixed(4)
               },
               fontColor: '#838a9b',
               fontSize: 13,
@@ -95,6 +102,7 @@ export default {
         bodyFontSize: 14,
         xPadding: 14,
         yPadding: 14,
+        caretPadding: 20,
         displayColors: false,
         mode: 'index',
         intersect: false,
@@ -109,7 +117,7 @@ export default {
               return `${name} ${Number(tooltipItem[0].yLabel).toFixed(8)}`
             }
 
-            return `${name} ${Number(tooltipItem[0].yLabel).toFixed(2)}`
+            return `${name} ${Number(tooltipItem[0].yLabel).toFixed(4)}`
           },
           label: tooltipItem => ''
           // label: tooltipItem => `BTC ${tooltipItem.yLabel}`
@@ -151,7 +159,7 @@ export default {
           pointHoverBorderColor: '#037cff',
           pointBackgroundColor: 'rgba(0,0,0,0)',
           pointBorderColor: 'rgba(0,0,0,0)',
-          pointHoverRadius: 5,
+          pointHoverRadius: 7,
           pointHoverBorderWidth: 4,
           fill: false,
           // data: this.chartData.map((point, index) => {

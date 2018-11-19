@@ -1,6 +1,6 @@
 <template>
   <div class="max-w-2xl mx-auto md:pt-5">
-    <content-header>{{ $t("Top Accounts") }}</content-header>
+    <content-header>{{ $t("Top Wallets") }}</content-header>
     <section class="page-section py-5 md:py-10">
       <div class="hidden sm:block">
         <table-wallets :wallets="wallets" :total="supply"></table-wallets>
@@ -8,7 +8,7 @@
       <div class="sm:hidden">
         <table-wallets-mobile :wallets="wallets" :total="supply"></table-wallets-mobile>
       </div>
-      <paginator :start="+this.$route.params.page"></paginator>
+      <paginator v-if="wallets && wallets.length" :start="+this.$route.params.page"></paginator>
     </section>
   </div>
 </template>
@@ -18,7 +18,7 @@ import { mapGetters } from 'vuex'
 import WalletService from '@/services/wallet'
 
 export default {
-  data: () => ({ wallets: [] }),
+  data: () => ({ wallets: null }),
 
   async beforeRouteEnter (to, from, next) {
     const response = await WalletService.top(to.params.page)
@@ -26,7 +26,7 @@ export default {
   },
 
   async beforeRouteUpdate (to, from, next) {
-    this.wallets = []
+    this.wallets = null
 
     const response = await WalletService.top(to.params.page)
     this.setWallets(response)

@@ -4,7 +4,7 @@
 
     <delegate-detail :delegateCount="delegateCount"></delegate-detail>
 
-    <section class="page-section py-8">
+    <section class="page-section py-5 md:py-10">
       <nav class="mx-5 sm:mx-10 mb-4 border-b flex items-end">
         <div
           @click="activeTab = 'active'"
@@ -43,32 +43,28 @@ export default {
   },
 
   data: () => ({
-    delegates: [],
-    delegateCount: null,
-    activeTab: 'active',
-    timer: null,
+    delegates: null,
+    delegateCount: 0,
+    activeTab: 'active'
   }),
 
   async mounted() {
-    await this.getDelegates()
-    this.initialiseTimer()
+    await this.prepareComponent()
   },
 
   methods: {
+    async prepareComponent() {
+      await this.getDelegates()
+
+      this.$store.watch(state => state.network.height, value => this.getDelegates())
+    },
+
     async getDelegates() {
       const response = await DelegateService.activeDelegates()
       this.delegates = response.delegates
       this.delegateCount = response.delegateCount
-    },
-
-    initialiseTimer() {
-      this.timer = setInterval(this.getDelegates, 60 * 1000)
-    },
-  },
-
-  beforeDestroy() {
-    clearInterval(this.timer)
-  },
+    }
+  }
 }
 </script>
 

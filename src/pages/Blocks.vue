@@ -1,14 +1,14 @@
 <template>
   <div class="max-w-2xl mx-auto md:pt-5">
     <content-header>{{ $t("Blocks") }}</content-header>
-    <section class="page-section py-10">
+    <section class="page-section py-5 md:py-10">
       <div class="hidden sm:block">
         <table-blocks :blocks="blocks"></table-blocks>
       </div>
       <div class="sm:hidden">
         <table-blocks-mobile :blocks="blocks"></table-blocks-mobile>
       </div>
-      <paginator :start="+this.$route.params.page"></paginator>
+      <paginator v-if="blocks && blocks.length" :start="+this.$route.params.page"></paginator>
     </section>
   </div>
 </template>
@@ -17,7 +17,7 @@
 import BlockService from '@/services/block'
 
 export default {
-  data: () => ({ blocks: [] }),
+  data: () => ({ blocks: null }),
 
   created() {
     this.$on('paginatorChanged', page => this.changePage(page))
@@ -29,7 +29,7 @@ export default {
   },
 
   async beforeRouteUpdate (to, from, next) {
-    this.blocks = []
+    this.blocks = null
 
     const response = await BlockService.paginate(to.params.page)
     this.setBlocks(response)

@@ -3,15 +3,19 @@ import * as types from '../mutation-types'
 export default {
   namespaced: true,
   state: {
-    language: 'en',
+    language: 'en-gb',
+    locale: navigator.language || 'en-gb',
     nightMode: false,
     priceChart: true,
     headerType: null,
-    menuVisible: false,
+    menuVisible: false
   },
   mutations: {
     [types.SET_UI_LANGUAGE](state, payload) {
       state.language = payload.value
+    },
+    [types.SET_UI_LOCALE](state, payload) {
+      state.locale = payload.value
     },
     [types.SET_UI_NIGHT_MODE](state, payload) {
       state.nightMode = payload.value
@@ -28,8 +32,18 @@ export default {
   },
   actions: {
     setLanguage: ({ commit }, value) => {
+      localStorage.setItem('language', value)
+
       commit({
         type: types.SET_UI_LANGUAGE,
+        value,
+      })
+    },
+    setLocale: ({ commit }, value) => {
+      localStorage.setItem('locale', value)
+
+      commit({
+        type: types.SET_UI_LOCALE,
         value,
       })
     },
@@ -78,6 +92,7 @@ export default {
   },
   getters: {
     language: state => state.language,
+    locale: state => state.locale,
     nightMode: state => state.nightMode,
     priceChart: state => state.priceChart,
     headerType: state => state.headerType,

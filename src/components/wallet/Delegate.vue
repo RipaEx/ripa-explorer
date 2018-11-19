@@ -17,7 +17,7 @@
 
     <div class="list-row-border-b">
       <div>{{ $t("Approval") }}</div>
-      <div v-tooltip="{ content: readableCrypto(this.delegate.vote, true, 2), placement: 'left' }">
+      <div v-tooltip="{ trigger: 'hover click', content: readableCrypto(this.delegate.vote, true, 2), placement: 'left' }">
         {{ percentageString(delegate.approval) }}
       </div>
     </div>
@@ -27,12 +27,12 @@
       <div>{{ readableCrypto(delegate.forged) }}</div>
     </div>
 
-    <div class="list-row-border-b">
+    <div class="list-row">
       <div>{{ $t("Blocks") }}</div>
       <div>
-        <span :class="[ !delegate.missedblocks && delegate.producedblocks ? 'mr-2' : '' ]">{{ delegate.producedblocks }}</span>
-        <span v-if="!!delegate.missedblocks" class="text-grey mr-2">({{ delegate.missedblocks }} {{ $t("missed") }})</span>
-        <router-link v-if="delegate.producedblocks > 0" :to="{ name: 'wallet-blocks', params: { address: delegate.address, page: 1 } }">{{ $t("See all") }}</router-link>
+        <span :class="{ 'mr-2': !delegate.missedblocks && delegate.producedblocks }">{{ delegate.producedblocks }}</span>
+        <span v-if="delegate.missedblocks" class="text-grey" :class="{ 'mr-2': delegate.producedblocks }">({{ delegate.missedblocks }} {{ $t("missed") }})</span>
+        <router-link v-if="delegate.producedblocks" :to="{ name: 'wallet-blocks', params: { address: delegate.address, username: delegate.username, page: 1 } }">{{ $t("See all") }}</router-link>
       </div>
     </div>
   </div>

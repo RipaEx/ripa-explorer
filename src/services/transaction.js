@@ -20,11 +20,15 @@ class TransactionService {
     return response.data.transaction
   }
 
-  async findByBlock(id) {
+  async findByBlock(id, page = 1, limit = 25) {
+    const offset = page > 1 ? (page - 1) * limit : 0
+
     const response = await NodeService.get('transactions', {
       params: {
         blockId: id,
-        limit: 25
+        limit,
+        offset,
+        orderBy: 'timestamp:desc'
       }
     })
     return response.data.transactions
@@ -115,16 +119,14 @@ class TransactionService {
     return response.data.count
   }
 
-  async votes(senderId) {
+  async findByBlockCount(blockId) {
     const response = await NodeService.get('transactions', {
       params: {
-        orderBy: 'timestamp:desc',
-        limit: 25,
-        type: 3,
-        senderId
+        blockId,
+        limit: 1
       }
     })
-    return response.data
+    return response.data.count
   }
 
   async paginate(page, limit = 25) {

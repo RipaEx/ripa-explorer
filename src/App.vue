@@ -14,11 +14,12 @@
 <script type="text/ecmascript-6">
 import AppHeader from '@/components/header/Main'
 import AppFooter from '@/components/Footer'
-import CoinMarketCapService from '@/services/coin-market-cap'
+import CryptoCompareService from '@/services/crypto-compare'
 import BlockService from '@/services/block'
 import DelegateService from '@/services/delegate'
 import LoaderService from '@/services/loader'
 import { mapGetters } from 'vuex'
+import moment from 'moment'
 
 import '@/styles/style.css'
 
@@ -26,7 +27,8 @@ export default {
   components: { AppHeader, AppFooter },
 
   data: () => ({
-    timer: null,
+    currencyTimer: null,
+    networkTimer: null
   }),
 
   async created() {
@@ -60,7 +62,12 @@ export default {
 
     this.$store.dispatch(
       'ui/setLanguage',
-      localStorage.getItem('language') || 'en'
+      localStorage.getItem('language') || 'en-gb'
+    )
+
+    this.$store.dispatch(
+      'ui/setLocale',
+      localStorage.getItem('locale') || navigator.language || 'en-gb'
     )
 
     this.$store.dispatch(
@@ -70,9 +77,11 @@ export default {
 
     this.$store.dispatch(
       'ui/setNightMode',
-      localStorage.getItem('nightMode') || false
+      localStorage.getItem('nightMode') || ((network.alias === 'Development') ? true : false)
     )
 
+    this.updateI18n()
+    this.updateLocale()
     this.updateCurrencyRate()
     this.updateSupply()
     this.updateHeight()
@@ -85,18 +94,18 @@ export default {
 
   computed: {
     ...mapGetters('currency', { currencyName: 'name' }),
-    ...mapGetters('ui', ['nightMode']),
+    ...mapGetters('ui', ['language', 'locale', 'nightMode']),
     ...mapGetters('network', ['token']),
   },
 
   methods: {
     prepareComponent() {
-      this.initialiseTimer()
+      this.initialiseTimers()
     },
 
     async updateCurrencyRate() {
       if (this.currencyName !== this.token) {
-        const rate = await CoinMarketCapService.price(this.currencyName)
+        const rate = await CryptoCompareService.price(this.currencyName)
         this.$store.dispatch('currency/setRate', rate)
       }
     },
@@ -116,18 +125,34 @@ export default {
       this.$store.dispatch('delegates/setDelegates', delegates)
     },
 
-    initialiseTimer() {
-      this.timer = setInterval(() => {
+    updateI18n() {
+      this.$i18n.locale = this.language
+    },
+
+    updateLocale() {
+      moment.locale(this.locale)
+    },
+
+    initialiseTimers() {
+      this.currencyTimer = setInterval(() => {
         this.updateCurrencyRate()
+      }, 5 * 60 * 1000)
+
+      this.networkTimer = setInterval(() => {
         this.updateSupply()
         this.updateHeight()
         this.updateDelegates()
-      }, 5 * 60 * 1000)
+      }, 8 * 1000)
     },
+
+    clearTimers() {
+      clearInterval(this.currencyTimer)
+      clearInterval(this.networkTimer)
+    }
   },
 
   beforeDestroy() {
-    clearInterval(this.timer)
+    this.clearTimers()
   },
 }
 </script>

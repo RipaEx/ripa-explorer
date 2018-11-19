@@ -7,7 +7,7 @@
         <div class="mr-6 flex-none">
           <img class="block" src="@/assets/images/icons/transaction.png" />
         </div>
-        <div  class="flex-auto min-w-0">
+        <div class="flex-auto min-w-0">
           <div class="text-grey mb-2">{{ $t("Transaction ID") }}</div>
           <div class="flex">
             <div class="text-xl text-white semibold truncate">
@@ -21,8 +21,8 @@
       </div>
     </section>
 
-    <section class="page-section py-8 mb-5">
-      <div class="px-5 sm:px-10 py-4">
+    <section class="page-section py-5 md:py-10 mb-5">
+      <div class="px-5 sm:px-10">
         <div class="list-row-border-b">
           <div>{{ $t("Sender") }}</div>
           <div class="truncate">
@@ -33,7 +33,7 @@
         <div class="list-row-border-b">
           <div>{{ $t("Recipient") }}</div>
           <div class="truncate">
-            <link-wallet :address="transaction.recipientId" :type="transaction.type">{{ transaction.recipientId }}</link-wallet>
+            <link-wallet :address="transaction.recipientId" :type="transaction.type" :asset="transaction.asset">{{ transaction.recipientId }}</link-wallet>
           </div>
         </div>
 
@@ -44,7 +44,8 @@
 
         <div class="list-row-border-b">
           <div>{{ $t("Amount") }}</div>
-          <div>{{ readableCrypto(transaction.amount) }}</div>
+          <div v-if="average" v-tooltip="{ trigger: 'hover click', content: `${readableCurrency(transaction.amount, average)}`, placement: 'left' }">{{ readableCrypto(transaction.amount) }}</div>
+          <div v-else>{{ readableCrypto(transaction.amount) }}</div>
         </div>
 
         <div class="list-row-border-b">
@@ -73,21 +74,33 @@
 
 <script type="text/ecmascript-6">
 import TransactionService from '@/services/transaction'
+import CryptoCompareService from '@/services/crypto-compare'
+
 import { mapGetters } from 'vuex'
 
 export default {
   data: () => ({
     transaction: {},
+    average: 1
   }),
 
   computed: {
     ...mapGetters('delegates', ['delegates']),
+    ...mapGetters('currency', { currencySymbol: 'symbol' })
+  },
+
+  async mounted() {
+    await this.prepareComponent()
   },
 
   async beforeRouteEnter(to, from, next) {
     try {
-      const response = await TransactionService.find(to.params.id)
-      next(vm => vm.setTransaction(response))
+      const transaction = await TransactionService.find(to.params.id)
+      const average = await CryptoCompareService.dailyAverage(transaction.timestamp)
+      next(vm => {
+        vm.setTransaction(transaction),
+        vm.setAverage(average)
+      })
     } catch(e) { next({ name: '404' }) }
   },
 
@@ -95,16 +108,28 @@ export default {
     this.transaction = {}
 
     try {
-      const response = await TransactionService.find(to.params.id)
-      this.setTransaction(response)
+      const transaction = await TransactionService.find(to.params.id)
+      const average = await CryptoCompareService.dailyAverage(transaction.timestamp)
+      this.setTransaction(transaction)
+      this.setAverage(average)
       next()
     } catch(e) { next({ name: '404' }) }
   },
 
   methods: {
+    async prepareComponent() {
+      this.$store.watch(state => state.currency.name, value => this.updateAverage())
+    },
+    async updateAverage() {
+      const average = await CryptoCompareService.dailyAverage(this.transaction.timestamp)
+      this.setAverage(average)
+    },
     setTransaction(transaction) {
       this.transaction = transaction
     },
+    setAverage(average) {
+      this.average = average
+    }
   },
 }
 </script>

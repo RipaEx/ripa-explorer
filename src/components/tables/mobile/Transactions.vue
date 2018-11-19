@@ -19,7 +19,7 @@
 
         <div class="list-row-border-b">
           <div>{{ $t("Recipient") }}</div>
-          <link-wallet :address="transaction.recipientId" :type="transaction.type"></link-wallet>
+          <link-wallet :address="transaction.recipientId" :type="transaction.type" :asset="transaction.asset"></link-wallet>
         </div>
 
         <div class="list-row-border-b-no-wrap" v-if="truncate(transaction.vendorField || '')">
@@ -28,16 +28,19 @@
         </div>
 
         <div class="list-row-border-b">
-          <div>{{ $t("Amount (token)", {token: networkToken()}) }}</div>
+          <div>{{ $t("Amount (token)", { token: networkToken() }) }}</div>
           <div>
             <transaction-amount :transaction="transaction" :type="transaction.type"></transaction-amount>
           </div>
         </div>
 
         <div class="list-row">
-          <div>{{ $t("Fee (token)", {token: networkToken()}) }}</div>
+          <div>{{ $t("Fee (token)", { token: networkToken() }) }}</div>
           <div>{{ readableCrypto(transaction.fee) }}</div>
         </div>
+      </div>
+      <div v-if="transactions && !transactions.length" class="px-5 md:px-10">
+        <span>{{ $t("No results") }}</span>
       </div>
     </loader>
   </div>
@@ -47,7 +50,7 @@
 export default {
   props: {
     transactions: {
-      type: Array,
+      // type: Array or null
       required: true,
     }
   }

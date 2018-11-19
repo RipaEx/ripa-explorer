@@ -15,6 +15,7 @@ const glob = require('glob-all')
 const gitRevision = require('./utils/git-revision')()
 const argumentParser = require('./argument-parser')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const safeParser = require('postcss-safe-parser')
 
 class TailwindExtractor {
   static extract(content) {
@@ -45,7 +46,8 @@ const createWebpackConfig = (baseUrl, network, networkConfig, routerMode) => {
         'process.env': {
           ...require('../config/prod.env'),
           ...{EXPLORER_CONFIG: `"${network}"`},
-          ...{ROUTER_MODE: `"${routerMode}"`}
+          ...{ROUTER_MODE: `"${routerMode}"`},
+          ...{TITLE: `"${networkConfig.title}"`}
         },
         GIT_VERSION: JSON.stringify(gitRevision.version),
         GIT_DATE: JSON.stringify(gitRevision.date)
@@ -78,6 +80,9 @@ const createWebpackConfig = (baseUrl, network, networkConfig, routerMode) => {
           'table-component__th--sort-asc', 'table-component__th--sort-desc',
           'tr', 'td'
         ],
+        whitelistPatterns: [
+          /^tooltip-bg-/
+        ],
         extractors: [{
           extractor: TailwindExtractor,
           extensions: ["html", "js", "vue"]
@@ -87,8 +92,8 @@ const createWebpackConfig = (baseUrl, network, networkConfig, routerMode) => {
       // duplicated CSS from different components can be deduped.
       new OptimizeCSSPlugin({
         cssProcessorOptions: config.build.productionSourceMap
-          ? { safe: true, map: { inline: false } }
-          : { safe: true }
+          ? { parser: safeParser, map: { inline: false } }
+          : { parser: safeParser }
       }),
       // generate dist index.html with correct asset hash for caching.
       // you can customize output by editing /index.html

@@ -17,7 +17,7 @@
         </svg>
         <span class="semibold">{{ $t("Menu") }}</span>
       </button>
-      <span class="border-r mx-4 lg:mx-6 my-4"></span>
+      <span class="border-r mx-2 md:mx-4 lg:mx-6 my-4"></span>
       <div class="flex-auto flex items-center justify-center">
         <label for="search" class="hidden">{{ $t("Search") }}</label>
         <input
@@ -40,6 +40,9 @@
 
       <span class="border-r mx-2 md:mx-4 lg:mx-6 my-4"></span>
       <toggle-theme></toggle-theme>
+
+      <span class="border-r mx-2 md:mx-4 lg:mx-6 my-4 hidden md:block"></span>
+      <toggle-language></toggle-language>
     </div>
   </div>
 </template>
@@ -48,12 +51,14 @@
 import ToggleTheme from './ToggleTheme'
 import ToggleChart from './ToggleChart'
 import ToggleCurrency from './ToggleCurrency'
+import ToggleLanguage from './ToggleLanguage'
 import { mapGetters } from 'vuex'
 
 export default {
   components: {
     ToggleTheme,
     ToggleCurrency,
+    ToggleLanguage,
     ToggleChart,
   },
 

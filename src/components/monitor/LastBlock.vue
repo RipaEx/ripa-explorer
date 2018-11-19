@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-auto flex justify-between sm:ml-10">
+  <div class="flex-auto flex justify-between lg:ml-10">
     <div>
       <div class="text-grey mb-2 min-w-0">{{ $t("Last block") }}</div>
       <div class="text-lg truncate" v-if="block.id">
@@ -29,28 +29,24 @@ import { mapGetters } from 'vuex'
 
 export default {
   data: () => ({
-    block: {},
-    timer: null,
+    block: {}
   }),
 
   async mounted() {
-    await this.getBlock()
-    this.initialiseTimer()
+    await this.prepareComponent()
   },
 
   methods: {
+    async prepareComponent() {
+      await this.getBlock()
+
+      this.$store.watch(state => state.network.height, value => this.getBlock())
+    },
+
     async getBlock() {
       const response = await BlockService.last()
       this.block = response
-    },
-
-    initialiseTimer() {
-      this.timer = setInterval(this.getBlock, 60 * 1000)
-    },
-  },
-
-  beforeDestroy() {
-    clearInterval(this.timer)
-  },
+    }
+  }
 }
 </script>
