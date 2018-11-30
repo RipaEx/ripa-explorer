@@ -28,7 +28,7 @@ class BlockService {
 
   async supply() {
     const response = await NodeService.get('blocks/getSupply')
-    var supply = response.data.supply - 500000000000000
+    var supply = response.data.supply - 700000000000000
     return supply
   }
 
