@@ -1,8 +1,8 @@
 {
-  "title": "DARK Explorer",
-  "server": "https://dexplorer.ark.io:8443/api",
+  "title": "DXPX Explorer",
+  "server": "http://51.15.46.213:7500/api",
   "alias": "Development",
-  "activeDelegates": 51,
+  "activeDelegates": 101,
   "rewardOffset": 75600,
   "currencies": [],
   "knownWallets": {},
