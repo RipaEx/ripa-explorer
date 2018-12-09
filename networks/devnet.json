@@ -1,6 +1,6 @@
 {
   "title": "DXPX Explorer",
-  "server": "http://51.15.46.213:7500/api",
+  "server": "https://api.devnet.ripaex.com/api",
   "alias": "Development",
   "activeDelegates": 101,
   "rewardOffset": 75600,
