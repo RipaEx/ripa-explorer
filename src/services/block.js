@@ -27,9 +27,8 @@ class BlockService {
   }
 
   async supply() {
-    const response = await NodeService.get('blocks/getSupply')
-    var supply = response.data.supply - 900000000000000
-    return supply
+    const response = await NodeService.get('blocks/getCirculatingSupply')
+    return response.data.circulatingSupply ? response.data.circulatingSupply : response.data.supply
   }
 
   async find(id) {
