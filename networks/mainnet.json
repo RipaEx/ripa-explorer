@@ -1,6 +1,6 @@
 {
   "title": "RIPA Explorer",
-  "server": "https://api.ripaex.io/api",
+  "server": "https://api2.ripaex.io/api",
   "alias": "Main",
   "activeDelegates": 101,
   "rewardOffset": 75600,
